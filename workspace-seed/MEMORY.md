@@ -6,7 +6,7 @@ Dar estructura externa al negocio y a la semana de Emma.
 ## Business Model
 - Servicios de render por paquetes/proyecto.
 - Clientes principales: wedding planners / diseñadores de eventos.
-- CRM ligero primero en memoria; luego exportable a CSV/Google Sheet.
+- CRM ligero primero en memoria; luego exportable y sincronizable a Google Sheet vía `gog`.
 
 ## Active Commercial Entities
 - Fernando: eventual

@@ -14,7 +14,7 @@ Antes de tocar nada:
 3. No edites `workspace-seed/` salvo que un paso de instalación falle por una inconsistencia real.
 
 Reglas:
-- No reintroduzcas un wizard genérico.
+- No reintroduzcas onboarding genérico.
 - No cambies identidad, memoria ni comportamiento de Emma.
 - No inventes capacidades de OpenClaw ni de Rovo Dev.
 - No intentes instalar Rovo Dev dentro de Docker ni dentro de este repositorio. Tú ya eres el agente que opera el repo.
@@ -26,12 +26,14 @@ Flujo exacto:
 2. Si no existe `.env`, créalo desde `.env.example`.
 3. Ejecuta `scripts/install-stack.sh`.
 4. Ejecuta `docker compose -f docker-compose.yml run --rm openclaw-cli onboard` y conserva la configuración sembrada; solo completa modelo/canal.
-5. Ejecuta `scripts/cron.seed.sh`.
-6. Levanta `openclaw-gateway` con `docker compose -f docker-compose.yml up -d openclaw-gateway`.
-7. Verifica y reporta:
+5. Si `gog` está disponible y el usuario ya tiene credenciales OAuth, deja conectados Docs/Sheets/Calendar/Drive.
+6. Ejecuta `scripts/cron.seed.sh`.
+7. Levanta `openclaw-gateway` con `docker compose -f docker-compose.yml up -d openclaw-gateway`.
+8. Verifica y reporta:
    - contenedores arriba
    - puerto OpenClaw
    - archivos sembrados en `state/config` y `state/workspace`
+   - estado de integración Google (`gog`) si aplica
 
 Salida esperada:
 - Estado final de instalación

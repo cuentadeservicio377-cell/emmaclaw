@@ -9,7 +9,7 @@ Distribución instalable de Emma sobre OpenClaw + Pepito, preparada para que Rov
 - Pepito ya viene absorbido en memoria base, skills y hooks del workspace.
 - La transcripción ya está convertida a seed operativo.
 - El repo queda listo para que Rovo Dev opere la instalación directamente.
-- El asistente nace como operador de negocio + agenda, no como chatbot ni wizard genérico.
+- El asistente nace como operador de negocio + agenda, no como chatbot ni onboarding genérico.
 
 ## Estructura
 
@@ -18,6 +18,7 @@ Distribución instalable de Emma sobre OpenClaw + Pepito, preparada para que Rov
 - `scripts/prepare-openclaw-source.sh`: clona o actualiza OpenClaw dentro de `state/vendor/openclaw`.
 - `scripts/init-emma.sh`: siembra `state/config` y `state/workspace`.
 - `scripts/install-stack.sh`: ejecuta la preparación automatizable de Emma + OpenClaw.
+- `scripts/update-stack.sh`: re-siembra Emma, reconstruye imagen y reprovisiona después de cambios de base o runtime.
 - `scripts/cron.seed.sh`: activa heartbeat, hooks y cron usando `openclaw-cli`.
 - `docker-compose.yml`: runtime Docker de OpenClaw.
 - `AGENTS.md`: instrucciones de proyecto para Rovo Dev.
@@ -67,6 +68,22 @@ scripts/cron.seed.sh
 docker compose up -d openclaw-gateway
 ```
 
+## Integración Google
+
+Emma también debe tener `gog` listo de base para exportación operativa, Google Calendar y artefactos compartidos:
+
+```bash
+brew install steipete/tap/gogcli
+gog auth credentials /path/to/client_secret.json
+gog auth add you@gmail.com --services gmail,calendar,drive,contacts,docs,sheets
+gog auth list
+```
+
+Uso esperado del caso:
+- Google Sheets para exportar CRM ligero si hace falta
+- Google Calendar para agenda visible
+- Google Docs/Drive para material operativo compartido
+
 ## Preparación automatizable completa
 
 Si quieres dejar casi todo listo antes del login manual:
@@ -94,9 +111,11 @@ Cuando Rovo Dev abra este repo, su entrada principal debe ser:
 4. `workspace-seed/HEARTBEAT.md`
 5. `workspace-seed/memory/emma/*`
 
-Eso evita que vuelva a comportarse como wizard genérico y lo mantiene alineado al caso Emma.
+Eso evita que vuelva a comportarse como onboarding genérico y lo mantiene alineado al caso Emma.
 
 Si quieres darle una instrucción exacta para instalar todo, usa el prompt de [ROVODEV_INSTALL_PROMPT.md](/Users/pablomeneses/Documents/New%20project/codex-fleet-os/distributions/emma-openclaw/ROVODEV_INSTALL_PROMPT.md). Ese prompt asume que Rovo Dev ya está corriendo como tu agente, no que tenga que instalarse dentro del proyecto.
+
+Si quieres que Rovo reprovisione Emma después de cambios de `pepito` o `openclaw`, usa [ROVODEV_UPDATE_PROMPT.md](/Users/pablomeneses/Documents/New%20project/codex-fleet-os/distributions/emma-openclaw/ROVODEV_UPDATE_PROMPT.md).
 
 ## Resultado esperado
 

@@ -138,7 +138,7 @@ Después de una semana: "Esto es lo que entiendo. ¿Está bien?"
 
 Cuando instalás skills:
 - wacli → WhatsApp
-- google-workspace → Drive, Gmail, Calendar
+- gog → Drive, Docs, Sheets, Calendar, Gmail
 - memory-pill → Memoria mejorada
 
 ---
