@@ -1,0 +1,44 @@
+{
+  "runtimeConfig": {
+    "gateway": {
+      "mode": "local"
+    },
+    "agents": {
+      "defaults": {
+        "workspace": "~/.openclaw/workspace",
+        "skipBootstrap": true,
+        "heartbeat": {
+          "every": "2h",
+          "target": "last",
+          "prompt": "Read HEARTBEAT.md and Emma memory files. Follow them strictly. If nothing needs attention, reply HEARTBEAT_OK."
+        }
+      }
+    }
+  },
+  "distribution": {
+    "assistantId": "emma-gdl-001",
+    "personaBase": "pepito",
+    "workspaceRoot": "~/.openclaw/workspace",
+    "memoryRoots": [
+      "MEMORY.md",
+      "memory/pepito",
+      "memory/emma/crm",
+      "memory/emma/projects",
+      "memory/emma/planning",
+      "memory/emma/art",
+      "memory/emma/music",
+      "memory/emma/personal"
+    ],
+    "cronTargets": [
+      "Emma Daily Brief",
+      "Emma Weekly Planning"
+    ],
+    "operatingRules": [
+      "Negocio y agenda primero",
+      "No consultoria abstracta",
+      "No contenido por Emma",
+      "No escuela completa ni entrenador",
+      "Reacomodo diario obligatorio cuando cambie el dia"
+    ]
+  }
+}

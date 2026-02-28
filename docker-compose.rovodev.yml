@@ -1,0 +1,33 @@
+services:
+  rovodev-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.rovodev
+      args:
+        ACLI_INSTALL_URL: ${ACLI_INSTALL_URL:-https://acli.atlassian.com/linux/latest/install.sh}
+    image: emma-rovodev:local
+    working_dir: /workspace
+    environment:
+      HOME: /home/rovodev
+      BROWSER: echo
+    volumes:
+      - ${ROVODEV_WORKSPACE_DIR:-.}:/workspace
+      - ${ROVODEV_HOME_DIR:-./state/rovodev-home}:/home/rovodev
+    stdin_open: true
+    tty: true
+    init: true
+    command: ["bash"]
+
+  rovodev-server:
+    image: emma-rovodev:local
+    working_dir: /workspace
+    environment:
+      HOME: /home/rovodev
+      BROWSER: echo
+    volumes:
+      - ${ROVODEV_WORKSPACE_DIR:-.}:/workspace
+      - ${ROVODEV_HOME_DIR:-./state/rovodev-home}:/home/rovodev
+    ports:
+      - "${ROVODEV_PORT:-8123}:8123"
+    init: true
+    command: ["acli", "rovodev", "serve", "8123"]
