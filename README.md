@@ -1,6 +1,6 @@
 # Emma OpenClaw Distribution
 
-Distribución instalable de Emma sobre OpenClaw + Pepito y workspace preparado para Rovo Dev en Docker.
+Distribución instalable de Emma sobre OpenClaw + Pepito, preparada para que Rovo Dev opere este repo e instale el stack correcto.
 
 ## Qué resuelve
 
@@ -8,7 +8,7 @@ Distribución instalable de Emma sobre OpenClaw + Pepito y workspace preparado p
 - OpenClaw arranca con workspace preconfigurado.
 - Pepito ya viene absorbido en memoria base, skills y hooks del workspace.
 - La transcripción ya está convertida a seed operativo.
-- El repo también queda listo para abrirse con Rovo Dev dentro de un contenedor Linux.
+- El repo queda listo para que Rovo Dev opere la instalación directamente.
 - El asistente nace como operador de negocio + agenda, no como chatbot ni wizard genérico.
 
 ## Estructura
@@ -17,11 +17,9 @@ Distribución instalable de Emma sobre OpenClaw + Pepito y workspace preparado p
 - `config/openclaw.seed.jsonc`: manifiesto con runtime config válida + metadata futura de dashboard.
 - `scripts/prepare-openclaw-source.sh`: clona o actualiza OpenClaw dentro de `state/vendor/openclaw`.
 - `scripts/init-emma.sh`: siembra `state/config` y `state/workspace`.
-- `scripts/install-stack.sh`: ejecuta la preparación automatizable de OpenClaw + Rovo.
+- `scripts/install-stack.sh`: ejecuta la preparación automatizable de Emma + OpenClaw.
 - `scripts/cron.seed.sh`: activa heartbeat, hooks y cron usando `openclaw-cli`.
 - `docker-compose.yml`: runtime Docker de OpenClaw.
-- `Dockerfile.rovodev`: imagen Linux con ACLI + Rovo Dev CLI.
-- `docker-compose.rovodev.yml`: workspace container para usar Rovo Dev sobre este repo.
 - `AGENTS.md`: instrucciones de proyecto para Rovo Dev.
 - `ROVODEV_INSTALL_PROMPT.md`: prompt listo para pedirle a Rovo Dev que haga la instalación.
 
@@ -69,25 +67,7 @@ scripts/cron.seed.sh
 docker compose up -d openclaw-gateway
 ```
 
-## Instalar Rovo Dev en Docker para este repo
-
-Rovo Dev CLI oficial se instala a través de ACLI y se autentica con `acli rovodev auth login`. Este repo ya queda preparado para correrlo dentro de Docker y exponer server mode en el puerto `8123`.
-
-### Preparación
-
-1. Copia `.env.example` a `.env`.
-2. Si vas a trabajar desde otra ruta, ajusta:
-   - `OPENCLAW_SOURCE_DIR`
-   - `ROVODEV_WORKSPACE_DIR`
-   - `ROVODEV_HOME_DIR`
-   - `ROVODEV_PORT`
-3. Construye la imagen de Rovo:
-
-```bash
-docker compose -f docker-compose.rovodev.yml build
-```
-
-### Preparación automatizable completa
+## Preparación automatizable completa
 
 Si quieres dejar casi todo listo antes del login manual:
 
@@ -101,50 +81,8 @@ Ese script:
 - clona o actualiza OpenClaw en `state/vendor/openclaw`
 - siembra `state/config` y `state/workspace`
 - construye la imagen de OpenClaw
-- construye la imagen de Rovo Dev
 
-Después solo quedan los pasos interactivos de login y onboarding.
-
-### Login interactivo
-
-Ejecuta una shell dentro del contenedor:
-
-```bash
-docker compose -f docker-compose.rovodev.yml run --rm rovodev-cli
-```
-
-Dentro del contenedor:
-
-```bash
-acli rovodev auth login
-acli rovodev auth status
-```
-
-El volumen `state/rovodev-home/` conserva la sesión y la configuración entre reinicios.
-
-### Server mode
-
-Levanta Rovo Dev como servidor local:
-
-```bash
-docker compose -f docker-compose.rovodev.yml up -d rovodev-server
-```
-
-Endpoint expuesto:
-
-- `http://localhost:8123/sse`
-
-Para ver logs:
-
-```bash
-docker compose -f docker-compose.rovodev.yml logs -f rovodev-server
-```
-
-Para detenerlo:
-
-```bash
-docker compose -f docker-compose.rovodev.yml down
-```
+Después solo quedan onboarding, provisión y arranque del gateway.
 
 ## Qué leerá Rovo Dev
 
@@ -158,7 +96,7 @@ Cuando Rovo Dev abra este repo, su entrada principal debe ser:
 
 Eso evita que vuelva a comportarse como wizard genérico y lo mantiene alineado al caso Emma.
 
-Si quieres darle una instrucción exacta para instalar todo, usa el prompt de [ROVODEV_INSTALL_PROMPT.md](/Users/pablomeneses/Documents/New%20project/codex-fleet-os/distributions/emma-openclaw/ROVODEV_INSTALL_PROMPT.md).
+Si quieres darle una instrucción exacta para instalar todo, usa el prompt de [ROVODEV_INSTALL_PROMPT.md](/Users/pablomeneses/Documents/New%20project/codex-fleet-os/distributions/emma-openclaw/ROVODEV_INSTALL_PROMPT.md). Ese prompt asume que Rovo Dev ya está corriendo como tu agente, no que tenga que instalarse dentro del proyecto.
 
 ## Resultado esperado
 
@@ -173,9 +111,4 @@ Emma queda corriendo con:
 - daily brief 7 AM
 - weekly planning viernes 11 AM
 
-Y el mismo repo queda listo para:
-
-- abrir una shell Rovo Dev dentro de Docker
-- autenticar Rovo Dev con Atlassian
-- levantar server mode local por SSE
-- trabajar sobre el caso Emma sin reentrenar el contexto base
+Y el mismo repo queda listo para que Rovo Dev trabaje sobre el caso Emma sin reentrenar el contexto base ni mezclar su propia instalación con la del asistente.
